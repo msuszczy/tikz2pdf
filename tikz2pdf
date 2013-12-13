@@ -52,10 +52,10 @@ DEFAULT_TEMPLATE = r"""\documentclass[a4paper,10pt]{article}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \usepackage{pgf}
-
+\usepackage{gnuplot-lua-tikz}
+\pgfplotsset{compat=newest}
 \usepackage{tikz,nicefrac,amsmath,pifont}
-\usetikzlibrary{arrows,snakes,backgrounds,patterns,matrix,shapes,fit,calc,shadows,plotmarks}
-
+\usetikzlibrary{arrows,snakes,backgrounds,patterns,matrix,shapes,fit,calc,shadows,plotmarks,decorations.pathmorphing,plotmarks,external}
 \usepackage[graphics,tightpage,active]{preview}
 \usepackage{tabularx}
 \PreviewEnvironment{tikzpicture}
@@ -117,7 +117,7 @@ def generate_pdf(template, tikzfile, output_file):
     else:
         out = tempfile.TemporaryFile()
 
-    rc = subprocess.call(["pdflatex", "-shell-escape", "-halt-on-error",
+    rc = subprocess.call(["lualatex", "-shell-escape", "-halt-on-error",
                           texname], stdout = out, stderr = out)
     if rc:
         log_error("ERROR generating %s with pdflatex (rc = %d)\n"
